@@ -1,12 +1,9 @@
 import React, {Component} from 'react';
-import {FlatList , Text, View, StyleSheet} from 'react-native';
-
-import { Query } from "react-apollo";
-import { gql } from "apollo-boost";
+import {FlatList , Text, View, StyleSheet, ActivityIndicator} from 'react-native';
 
 import Item from './Item';
 import Header from './Header';
-import Ant from './Model';
+import Api from './api';
 
 const styles = StyleSheet.create({
   container: {
@@ -14,19 +11,30 @@ const styles = StyleSheet.create({
   },
 });
 
-
 class List extends Component {
 
   state = {
-    antsListStatus: 'not yet run',
+    antsListStatus: 'Not yet run',
     data: null,
     loading: false,
   }
 
   calculated = 0;
 
+  componentDidMount () {
+    this._getAllAnts();
+  }
+
+  async _getAllAnts () {
+    const api = new Api();
+    const data = await api.getAllAntsList();
+    this.setState({data, antsListStatus: 'In Progress'});
+    this.props.updateCarousel(data);
+  }
+
+
   calculateAll () {
-    if (this.state.antsListStatus === 'calculated') {
+    if (this.state.antsListStatus === 'All Calculated') {
       this.calculated = 0;
       const antList = this._resetPercentageAndState();
       this.setState({ antsListStatus: 'in progress', data: antList, loading: true });
@@ -75,7 +83,7 @@ class List extends Component {
   _increase() {
     this.calculated += 1;
     if (this.calculated === this.state.data.length) {
-      this.setState({ antsListStatus: 'calculated' });
+      this.setState({ antsListStatus: 'All Calculated' });
       const data = this.state.data.slice();
       this.props.updateCarousel(data);
     }
@@ -83,18 +91,7 @@ class List extends Component {
 
   _keyExtractor = (item, index) => item.name;
 
-  _transformAntEntityCollection(data = []) {
-    let count = 0;
-    const antList = data.flatMap(ant => {
-      const {name} = ant;
-      const antObject = new Ant(name, 'not yet run', 0, count);
-      count += 1;
-      return antObject;
-    });
-    this.setState({data: antList, antsListStatus: 'in progress'});
-  }
-
-  _renderList() {
+  _renderList () {
     const {antsListStatus, data} = this.state;
     return (
       <React.Fragment>
@@ -115,38 +112,19 @@ class List extends Component {
   }
 
   render () {
-    const {loading, data} = this.state;
-
+    const {loading} = this.state;
     if (loading) {
-      return <View style={styles.container}/>
-    }
-
-    if (data) {
       return (
         <View style={styles.container}>
-          {this._renderList()}
+          <ActivityIndicator size="large" color="#ccc" />
         </View>
-      );}
-    
+      );
+    }
     return (
-      <Query
-        query={gql`
-        {
-          ants {
-            name,
-            color
-          }
-        }
-      `}
-      >
-        {({ loading, error, data }) => {
-          if (loading) return <Text>{'Loading...'}</Text>;
-          if (error) return <Text>{'Error :('}</Text>;
-          this._transformAntEntityCollection(data.ants);
-          return null;
-        }}
-      </Query>
-    )
+      <View style={styles.container}>
+        {this._renderList()}
+      </View>
+    );
   }
 }
 

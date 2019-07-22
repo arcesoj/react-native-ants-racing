@@ -12,11 +12,6 @@ class Ant {
     return this;
   }
   
-  setPosition(position) {
-    this.position = position;
-    return this;
-  }
-  
   setState (state) {
     this.state = state;
     return this;

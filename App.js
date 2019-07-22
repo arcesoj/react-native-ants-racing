@@ -15,7 +15,6 @@ const MainNavigator = createStackNavigator({
 
 const AppNavigation = createAppContainer(MainNavigator);
 
-// Create the client as outlined in the setup guide
 const client = new ApolloClient({uri: 'https://antserver-blocjgjbpw.now.sh/graphql'});
 
 class App extends Component {
