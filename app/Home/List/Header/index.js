@@ -15,6 +15,6 @@ export default Header;
 const styles = StyleSheet.create({
   container: { flexDirection: 'row', margin: 5 },
   name: { width: 100, maxWidth: 100, marginRight: 25, fontWeight: 'bold' },
-  state: { width: 70, marginRight: 30, fontWeight: 'bold' },
+  state: { width: 90, marginRight: 40, fontWeight: 'bold' },
   odds: { marginRight: 40, fontWeight: 'bold' },
 });

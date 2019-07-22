@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {StyleSheet, View, Button} from 'react-native';
+import {StyleSheet, View, Text} from 'react-native';
 
 import AntsCarousel from './Carousel';
 import Logout from './Logout';
@@ -11,6 +11,11 @@ const styles = StyleSheet.create({
     backgroundColor: '#F5FCFF',
     padding: 10,
   },
+  calculate: {
+    color: '#fff',
+    marginRight: 10,
+    fontSize: 14,
+  }
 });
 
 class Home extends Component {
@@ -19,13 +24,14 @@ class Home extends Component {
     return {
       title: 'Ants Racing',
       headerRight: (
-        <Button
+        <Text
           onPress={() => {
             navigation.state.params.calculate();
           }}
-          title="Calculate"
-          color="#fff"
-        />
+          style={styles.calculate}
+        >
+          {'Calculate'}
+        </Text>
       ),
       headerStyle: {
         backgroundColor: '#f4511e',

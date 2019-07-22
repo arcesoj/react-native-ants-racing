@@ -46,7 +46,7 @@ class Logout extends React.PureComponent {
         <Text
           style={styles.text}
           onPress={this._signOut}>
-          {'Logout'}
+          {'Log Out'}
         </Text>
       )
     }

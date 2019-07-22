@@ -16,7 +16,7 @@ class AntStore {
   _transformAntEntityCollection(data = []) {
     const antList = data.flatMap(ant => {
       const {name} = ant;
-      const antObject = new Ant(name, 'not yet run', 0);
+      const antObject = new Ant(name, 'Not yet run', 0);
       return antObject;
     });
     return antList;
@@ -25,7 +25,7 @@ class AntStore {
   resetPercentageAndState (data) {
     const antListCopy = data.slice();
     const antList = antListCopy.map(ant => {
-      return ant.setOdds(0).setState('not yet run');
+      return ant.setOdds(0).setState('Not yet run');
     });
     return antList;
   }
@@ -34,7 +34,7 @@ class AntStore {
     const antListCopy = data.slice();
     const antList = antListCopy.map(ant => {
       if (ant.name === antSelected.name) {
-        return antSelected.setOdds(odds).setState('calculated');
+        return antSelected.setOdds(odds).setState('Calculated');
       }
       return ant;
     });

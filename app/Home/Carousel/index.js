@@ -12,12 +12,14 @@ const AntsCarousel = ({data = []}) => {
         <Text style={styles.text}>{ant.odds}</Text>
       </View>
     )
-  })
+  });
+
   const lastPosition = data.length - 1;
 
   return (
     <View style={styles.wrapper}>
       <Swiper
+        autoplay={true}
         index={lastPosition}
         loop={true}
         showsPagination={false}>
@@ -41,5 +43,5 @@ const styles = StyleSheet.create({
     color: '#fff',
     fontSize: 18,
     fontWeight: 'bold'
-  }
+  },
 });

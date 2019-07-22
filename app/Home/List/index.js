@@ -42,7 +42,7 @@ class List extends Component {
   };
 
   _resetAntList (antList) {
-    this.setState({ antsListStatus: 'in progress', data: antList, loading: true });
+    this.setState({ antsListStatus: 'In Progress', data: antList, loading: true });
     setTimeout(() => {
       this.setState({loading: false})
     }, 1);

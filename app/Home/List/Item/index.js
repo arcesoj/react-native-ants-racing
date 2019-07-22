@@ -7,10 +7,9 @@ class Item extends React.Component {
     this._calculate();
   }
 
-  _calculate = async () => {
-    await this.generateAntWinLikelihoodCalculator();
-    const ant = this.props.ant.setState('In Progress');
-    this.setState({ant});
+  _calculate = () => {
+    this.generateAntWinLikelihoodCalculator();
+    this.props.ant.setState('In Progress');
   }
 
   async generateAntWinLikelihoodCalculator () {
@@ -39,11 +38,6 @@ class Item extends React.Component {
         </Text>
         <Text style={styles.state}>{`${state}`}</Text>
         <Text style={styles.odds}>{`${odds}%`}</Text>
-        <Text
-          style={styles.calculate}
-          onPress={this._calculate}>
-          {'Calculate'}
-        </Text>
       </View>
     );
   }
@@ -66,14 +60,11 @@ const styles = StyleSheet.create({
     marginRight: 25
   },
   state: {
-    width: 70,
-    marginRight: 30
+    width: 90,
+    marginRight: 40
   },
   odds: {
     marginRight: 10,
     width: 40
-  },
-  calculate: {
-    color: 'blue'
   },
 });

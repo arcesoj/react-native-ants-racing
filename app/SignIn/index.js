@@ -3,7 +3,6 @@ import {
   StyleSheet,
   TextInput,
   View,
-  Button,
   Alert,
   ActivityIndicator,
   KeyboardAvoidingView,
@@ -70,6 +69,10 @@ class SignIn extends React.PureComponent {
     );
   }
 
+  onUsernameChangeText = (text) => this.setState({ username: text });
+
+  onPasswordChangeText = (text) => this.setState({ password: text });
+
   render () {
     const { username, password, loading } = this.state;
 
@@ -87,7 +90,7 @@ class SignIn extends React.PureComponent {
         <TextInput
           autoCapitalize={'none'}
           style={styles.textInput}
-          onChangeText={(text) => this.setState({username: text})}
+          onChangeText={this.onUsernameChangeText}
           value={username}
           placeholder={'username'} />
         <TextInput
@@ -96,11 +99,13 @@ class SignIn extends React.PureComponent {
           value={password}
           placeholder={'password'}
           secureTextEntry={true}
-          onChangeText={(text) => this.setState({password: text})}/>
-        <Button
-          color={'white'}
+          onChangeText={this.onPasswordChangeText}/>
+        <Text
           onPress={this._onSignInClick}
-          title="Sign In"/> 
+          style={styles.text}
+        >
+          {'Sign In'}
+        </Text>
       </KeyboardAvoidingView>
     );
   }
@@ -134,5 +139,9 @@ const styles = StyleSheet.create({
     fontSize: 20,
     color: 'white',
     marginBottom: 50,
+  },
+  text: {
+    color: 'white',
+    fontSize: 14
   }
 });
