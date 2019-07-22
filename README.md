@@ -3,10 +3,10 @@
 How to run Ants Racing App: 
 
 1. `git clone git@github.com:arcesoj/react-native-ants-racing.git`
-2. cd `react-native-ants-racing`
+2. `cd react-native-ants-racing`
 3. `npm install`
-4. cd ios && pod install
-5. open xcode and verify siging app 
+4. `cd ios && pod install`
+5. open xcode and verify siging app
 6. `npm start`
 7. `react-native run-ios --simulator="iPhone 7"` 
 
