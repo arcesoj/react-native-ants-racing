@@ -3,7 +3,7 @@ import {FlatList , Text, View, StyleSheet, ActivityIndicator} from 'react-native
 
 import Item from './Item';
 import Header from './Header';
-import Api from './api';
+import Store from './store';
 
 const styles = StyleSheet.create({
   container: {
@@ -20,56 +20,44 @@ class List extends Component {
   }
 
   calculated = 0;
+  store = new Store();
 
   componentDidMount () {
     this._getAllAnts();
   }
 
   async _getAllAnts () {
-    const api = new Api();
-    const data = await api.getAllAntsList();
+    const data = await this.store.getAllAntsList();
     this.setState({data, antsListStatus: 'In Progress'});
     this.props.updateCarousel(data);
   }
 
-
   calculateAll () {
     if (this.state.antsListStatus === 'All Calculated') {
       this.calculated = 0;
-      const antList = this._resetPercentageAndState();
-      this.setState({ antsListStatus: 'in progress', data: antList, loading: true });
-      setTimeout(() => {
-        this.setState({ loading: false})
-      }, 1);
+      const data = this.state.data.slice();
+      const antList = this.store.resetPercentageAndState(data);
+      this._resetAntList(antList);
     }
   };
 
-  _resetPercentageAndState () {
-    const antListCopy = this.state.data.slice();
-    const antList = antListCopy.map(ant => {
-      return ant.setOdds(0).setState('not yet run');
-    });
-    return antList;
+  _resetAntList (antList) {
+    this.setState({ antsListStatus: 'in progress', data: antList, loading: true });
+    setTimeout(() => {
+      this.setState({loading: false})
+    }, 1);
   }
 
   _percentageListener = (antSelected, odds) => {
-    const antListCopy = this.state.data.slice();
-    const antList = antListCopy.map(ant => {
-      if (ant.name === antSelected.name) {
-        return antSelected.setOdds(odds).setState('calculated');
-      }
-      return ant;
-    });
+    const data = this.state.data.slice();
+    const antList = this.store.percentageListener(data, antSelected, odds);
     this._updateData(antList);
   }
 
   _updateData(antList) {
-    const antListSorted = this._sortAntList(antList);
-    this.setState({data: antListSorted});
+    this.setState({data: antList});
     this._increase();
   }
-
-  _sortAntList  = antList => antList.sort((a, b) => (a.odds < b.odds) ? 1 : -1); 
 
   _renderItem = ({item}) => {
     return (
@@ -83,7 +71,7 @@ class List extends Component {
   _increase() {
     this.calculated += 1;
     if (this.calculated === this.state.data.length) {
-      this.setState({ antsListStatus: 'All Calculated' });
+      this.setState({antsListStatus: 'All Calculated'});
       const data = this.state.data.slice();
       this.props.updateCarousel(data);
     }
